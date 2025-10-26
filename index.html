@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tính số cách lập lịch y tá</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-center text-indigo-600">
+      🧮 Lập lịch làm việc y tá
+    </h1>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Số ngày (n):</label>
+        <input id="n" type="number" class="mt-1 w-full border rounded-lg p-2" placeholder="Ví dụ: 10">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Số ngày làm tối thiểu (k1):</label>
+        <input id="k1" type="number" class="mt-1 w-full border rounded-lg p-2" placeholder="Ví dụ: 2">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Số ngày làm tối đa (k2):</label>
+        <input id="k2" type="number" class="mt-1 w-full border rounded-lg p-2" placeholder="Ví dụ: 4">
+      </div>
+      <button onclick="compute()" class="w-full bg-indigo-500 text-white font-semibold py-2 rounded-lg hover:bg-indigo-600 transition">
+        Tính kết quả
+      </button>
+      <div id="result" class="text-center text-xl font-bold text-green-600 mt-4"></div>
+    </div>
+  </div>
+
+  <script>
+    const MOD = 1e9 + 7;
+
+    function add(a, b) {
+      a += b;
+      if (a >= MOD) a -= MOD;
+      return a;
+    }
+    function sub(a, b) {
+      a -= b;
+      if (a < 0) a += MOD;
+      return a;
+    }
+
+    function compute() {
+      const n = +document.getElementById('n').value;
+      const k1 = +document.getElementById('k1').value;
+      const k2 = +document.getElementById('k2').value;
+
+      if (n <= 0 || k1 <= 0 || k2 < k1) {
+        document.getElementById('result').innerText = "Dữ liệu không hợp lệ!";
+        return;
+      }
+
+      // Dịch thuật code C++ sang JS
+      let dp = [1, 1];
+      for (let i = 2; i <= k2; i++) dp.push(0);
+
+      let restLoad = 0;
+      for (let p = k1; p <= k2; p++) restLoad = add(restLoad, dp[p]);
+
+      for (let i = 2; i <= n; i++) {
+        let curLoad = sub(restLoad, dp[k2]);
+        curLoad = add(curLoad, dp[k1 - 1]);
+        dp.unshift(restLoad);
+        dp.pop();
+        restLoad = curLoad;
+      }
+
+      const ans = (dp[0] + restLoad) % MOD;
+      document.getElementById('result').innerText = `Số cách: ${ans}`;
+    }
+  </script>
+</body>
+</html>
