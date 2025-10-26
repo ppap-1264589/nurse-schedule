@@ -1,94 +1,77 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Tính số cách lập lịch y tá</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lập lịch làm việc của y tá</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Hiệu ứng rung nhẹ khi vượt giới hạn */
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-4px); }
-      50% { transform: translateX(4px); }
-      75% { transform: translateX(-4px); }
-    }
-    .shake {
-      animation: shake 0.3s;
-    }
-  </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-4 text-center text-indigo-600">
-      🧮 Lập lịch làm việc y tá
+  <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-lg">
+    <h1 class="text-2xl font-bold mb-3 text-center text-blue-600">
+      💊 Bài toán lập lịch làm việc của y tá
     </h1>
 
-    <!-- 🔽 PHẦN DETAILS MÔ TẢ ĐỀ BÀI -->
-    <details class="mb-6">
-      <summary class="cursor-pointer text-indigo-600 font-semibold hover:underline">
-        Chi tiết đề bài
+    <details class="mb-4">
+      <summary class="cursor-pointer font-semibold text-gray-700 hover:text-blue-600">
+        📘 Mô tả đề bài (click để xem)
       </summary>
-      <div class="mt-3 text-gray-700 text-sm leading-relaxed">
-        <p>Một nhân viên y tá làm việc trong <b>n</b> ngày.</p>
-        <ul class="list-disc ml-5">
-          <li>Cô ấy chỉ có thể làm việc tối thiểu <b>k₁</b> ngày liên tiếp và tối đa <b>k₂</b> ngày liên tiếp.</li>
-          <li>Giữa hai đợt làm việc liên tiếp, cô ấy được nghỉ đúng <b>một ngày</b>.</li>
-          <li>Không được phép nghỉ hai ngày liên tiếp.</li>
-        </ul>
-        <p class="mt-2">Yêu cầu: Đếm số cách sắp xếp lịch làm việc hợp lệ trong <b>n</b> ngày.  
-        Kết quả lấy <code>mod 1e9 + 7</code>.</p>
+      <div class="mt-2 text-gray-700 text-sm leading-relaxed">
+        Một nhân viên y tá chỉ có thể làm việc liên tiếp tối thiểu là <code>k₁</code> ngày 
+        và tối đa là <code>k₂</code> ngày trong giai đoạn <code>n</code> ngày.  
+        Giữa hai đợt làm việc liên tiếp, cô ấy chỉ được nghỉ đúng 1 ngày (không được nghỉ nhiều hơn).  
+        <br><br>
+        <b>Nhiệm vụ:</b> Đếm số cách lập lịch thỏa mãn điều kiện trên.  
+        <br>
+        <b>Đầu vào:</b> <code>n</code>, <code>k₁</code>, <code>k₂</code>  
+        <br>
+        <b>Đầu ra:</b> Số cách hợp lệ (mod 1e9 + 7)
       </div>
     </details>
-    <!-- 🔼 HẾT PHẦN MÔ TẢ -->
 
-    <!-- 🧮 FORM NHẬP -->
-    <div class="space-y-4">
+    <div class="space-y-3">
       <div>
-        <label class="block text-sm font-medium text-gray-700">Số ngày (n):</label>
-        <input id="n" type="number" class="mt-1 w-full border rounded-lg p-2" placeholder="Ví dụ: 10" oninput="limitInput('n', 10000000)">
-        <p id="warn-n" class="text-red-500 text-sm hidden">⚠️ Giá trị n vượt quá 10⁷!</p>
+        <label class="block font-semibold text-gray-700">Nhập n (≤ 100000):</label>
+        <input id="n" type="number" class="w-full border p-2 rounded" oninput="limitInput('n', 100000)">
+        <p id="warn-n" class="hidden text-red-600 text-sm">⚠️ n không được vượt quá 100000</p>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Số ngày làm tối thiểu (k₁):</label>
-        <input id="k1" type="number" class="mt-1 w-full border rounded-lg p-2" placeholder="Ví dụ: 2" oninput="limitInput('k1', 1000000)">
-        <p id="warn-k1" class="text-red-500 text-sm hidden">⚠️ Giá trị k₁ vượt quá 10⁶!</p>
+        <label class="block font-semibold text-gray-700">Nhập k₁ (≤ 10000):</label>
+        <input id="k1" type="number" class="w-full border p-2 rounded" oninput="limitInput('k1', 10000)">
+        <p id="warn-k1" class="hidden text-red-600 text-sm">⚠️ k₁ không được vượt quá 10000</p>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Số ngày làm tối đa (k₂):</label>
-        <input id="k2" type="number" class="mt-1 w-full border rounded-lg p-2" placeholder="Ví dụ: 4" oninput="limitInput('k2', 1000000)">
-        <p id="warn-k2" class="text-red-500 text-sm hidden">⚠️ Giá trị k₂ vượt quá 10⁶!</p>
+        <label class="block font-semibold text-gray-700">Nhập k₂ (≤ 10000):</label>
+        <input id="k2" type="number" class="w-full border p-2 rounded" oninput="limitInput('k2', 10000)">
+        <p id="warn-k2" class="hidden text-red-600 text-sm">⚠️ k₂ không được vượt quá 10000</p>
       </div>
-
-      <button onclick="compute()" class="w-full bg-indigo-500 text-white font-semibold py-2 rounded-lg hover:bg-indigo-600 transition">
-        Tính kết quả
-      </button>
-
-      <div id="result" class="text-center text-xl font-bold text-green-600 mt-4"></div>
     </div>
+
+    <button onclick="solve()" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all">
+      Tính số cách
+    </button>
+
+    <div id="result" class="mt-5 text-center text-lg font-semibold text-green-700"></div>
   </div>
 
   <script>
     const MOD = 1e9 + 7;
 
-    // Giới hạn input và hiển thị cảnh báo + hiệu ứng rung
     function limitInput(id, maxValue) {
       const el = document.getElementById(id);
       const warn = document.getElementById("warn-" + id);
       let val = Number(el.value);
-      let max = Number(maxValue);
 
-      if (val > max) {
-        el.value = max;
+      if (val > maxValue) {
+        el.value = maxValue;
         warn.classList.remove("hidden");
-        el.classList.add("shake", "border-red-400");
+        el.classList.add("border-red-500", "animate-pulse");
         setTimeout(() => {
           warn.classList.add("hidden");
-          el.classList.remove("shake", "border-red-400");
+          el.classList.remove("border-red-500", "animate-pulse");
         }, 1500);
-      } else {
-        warn.classList.add("hidden");
       }
     }
 
@@ -104,42 +87,38 @@
       return a;
     }
 
-    function compute() {
-      const n = +document.getElementById('n').value;
-      const k1 = +document.getElementById('k1').value;
-      const k2 = +document.getElementById('k2').value;
-      const resultEl = document.getElementById('result');
+    function solve() {
+      const n = Number(document.getElementById("n").value);
+      const k1 = Number(document.getElementById("k1").value);
+      const k2 = Number(document.getElementById("k2").value);
+      const resEl = document.getElementById("result");
 
-      if (n <= 0 || k1 <= 0 || k2 < k1) {
-        resultEl.innerText = "⚠️ Dữ liệu không hợp lệ!";
-        resultEl.classList.replace("text-green-600", "text-red-500");
+      if (!n || !k1 || !k2 || k1 > k2 || n <= 0) {
+        resEl.textContent = "⚠️ Dữ liệu không hợp lệ!";
+        resEl.className = "mt-5 text-center text-lg font-semibold text-red-600";
         return;
       }
 
-      if (n > 1e7 || k1 > 1e6 || k2 > 1e6) {
-        resultEl.innerText = "⚠️ Giá trị vượt quá giới hạn cho phép!";
-        resultEl.classList.replace("text-green-600", "text-red-500");
-        return;
-      }
-
-      // Logic chính (dịch từ C++)
-      let dp = [1, 1];
-      for (let i = 2; i <= k2; i++) dp.push(0);
-
+      let dp = new Array(k2 + 2).fill(0);
+      dp[0] = 1; // nghỉ
+      dp[1] = 1; // làm ngày đầu
       let restLoad = 0;
+
       for (let p = k1; p <= k2; p++) restLoad = add(restLoad, dp[p]);
 
       for (let i = 2; i <= n; i++) {
         let curLoad = sub(restLoad, dp[k2]);
         curLoad = add(curLoad, dp[k1 - 1]);
+
         dp.unshift(restLoad);
         dp.pop();
+
         restLoad = curLoad;
       }
 
-      const ans = (dp[0] + restLoad) % MOD;
-      resultEl.innerText = `✅ Số cách: ${ans}`;
-      resultEl.classList.replace("text-red-500", "text-green-600");
+      let ans = (dp[0] + restLoad) % MOD;
+      resEl.textContent = `✅ Kết quả: ${ans.toLocaleString('vi-VN')}`;
+      resEl.className = "mt-5 text-center text-lg font-semibold text-green-700";
     }
   </script>
 </body>
